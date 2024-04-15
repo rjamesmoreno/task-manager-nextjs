@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const useFetch = (url: string | URL | Request) => {
   const [data, setData] = useState(null);
   useEffect(() => {
-    fetch(url)
+    fetch(url, {cache: 'no-store'})
       .then((res) => {
         return res.json();
       })
