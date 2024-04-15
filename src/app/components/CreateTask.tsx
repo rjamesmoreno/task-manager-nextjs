@@ -1,17 +1,15 @@
 'use client'
 import { FormEventHandler, useState } from "react";
-let nextId=0;
 
 export default function CreateTask() {
   const [taskName, setTaskName] = useState("");
 
   const handleCreateTask: FormEventHandler<HTMLFormElement> = (e) => { 
     e.preventDefault();
-    const task = { taskName };
     fetch("http://localhost:8000/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(task),
+      body: JSON.stringify({ taskName, isFinished: false}),
     }).then(() => {
       console.log("task added successfully");
     });
@@ -22,7 +20,7 @@ export default function CreateTask() {
     <div className="relative p-4">
       <form onSubmit={handleCreateTask}>
         <input
-          className="py-2 px-4 w-full rounded-lg bg-[#183075] text-white"
+          className="py-2 px-4 w-[30vw] rounded-full bg-[#183075] text-white"
           placeholder="Enter Task"
           type="text"
           required
