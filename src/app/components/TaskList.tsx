@@ -9,12 +9,10 @@ export type Task = {
 };
 
 type TaskListProps = {
-  tasks : any[]
-}
+  tasks: any[];
+};
 
-export default function TaskList({tasks} : TaskListProps) {
-  // const tasks = props.tasks;
-
+export default function TaskList({ tasks }: TaskListProps) {
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
 
   const handleChange = async (taskId: number, isFinished: boolean) => {
