@@ -1,19 +1,19 @@
-'use client'
+"use client";
 import { FormEventHandler, useState } from "react";
 
 export default function CreateTask() {
   const [taskName, setTaskName] = useState("");
 
-  const handleCreateTask: FormEventHandler<HTMLFormElement> = (e) => { 
+  const handleCreateTask: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     fetch("http://localhost:8000/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskName, isFinished: false}),
+      body: JSON.stringify({ taskName, isFinished: false }),
     }).then(() => {
       console.log("task added successfully");
     });
-    setTaskName('');
+    setTaskName("");
   };
 
   return (
