@@ -1,22 +1,23 @@
-"use client"
+"use client";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Task } from "./TaskList";
 
 type TaskProps = {
-  task: Task
-  handleChange: (taskId: number, isFinished: boolean) => void
-  deleteTask: (taskId: number) => void
-  setCompleteTasksCount : Dispatch<SetStateAction<number>>
-  tasks: Task[]
-  completedTasksCount : number
-}
+  task: Task;
+  handleChange: (taskId: number, isFinished: boolean) => void;
+  deleteTask: (taskId: number) => void;
+  setCompleteTasksCount: Dispatch<SetStateAction<number>>;
+  tasks: Task[];
+  completedTasksCount: number;
+};
 
-
-
-export default function TaskItem({task, tasks, setCompleteTasksCount, completedTasksCount, handleChange, deleteTask} : TaskProps) {
+export default function TaskItem({
+  task,
+  handleChange,
+  deleteTask,
+}: TaskProps) {
   const [status, setStatus] = useState(false);
 
-  
   return (
     <div key={task.id} className="py-2 px-4 flex">
       <div className="h-[4vh] w-[2vw] bg-[#23366D] pl-[9px] pt-1 mr-1 rounded-l-lg">
@@ -24,8 +25,8 @@ export default function TaskItem({task, tasks, setCompleteTasksCount, completedT
           type="checkbox"
           checked={task.isFinished}
           onChange={(e) => {
-            setStatus(!status)
-            handleChange(task.id, e.target.checked)
+            setStatus(!status);
+            handleChange(task.id, e.target.checked);
           }}
         ></input>
       </div>
