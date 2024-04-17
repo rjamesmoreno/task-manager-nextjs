@@ -1,21 +1,22 @@
 "use client";
 import { FormEventHandler, useState } from "react";
+import { addTask } from "../../../api";
+import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 export default function CreateTask() {
+  const router = useRouter();
   const [taskName, setTaskName] = useState("");
 
-  const handleCreateTask: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    fetch("http://localhost:8000/tasks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskName, isFinished: false }),
-    }).then(() => {
-      console.log("task added successfully");
+  const handleCreateTask: FormEventHandler<HTMLFormElement> = async (e) => {
+    await addTask({
+      id: uuidv4(),
+      title: taskName,
+      isFinished: false,
     });
     setTaskName("");
+    router.refresh();
   };
-
   return (
     <div className="relative p-4">
       <form onSubmit={handleCreateTask}>

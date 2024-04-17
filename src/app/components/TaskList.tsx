@@ -1,52 +1,19 @@
 "use client";
-import { Dispatch, SetStateAction, useState } from "react";
 import TaskItem from "./TaskItem";
-
-export type Task = {
-  id: number;
-  taskName: string;
-  isFinished: boolean;
-};
+import { ITask } from "../types/tasks";
 
 type TaskListProps = {
-  tasks: any[];
+  tasks: ITask[];
 };
 
 export default function TaskList({ tasks }: TaskListProps) {
-  const [completedTasksCount, setCompletedTasksCount] = useState(0);
-
-  const handleChange = async (taskId: number, isFinished: boolean) => {
-    const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...tasks.find((t) => t.id === taskId),
-        isFinished: isFinished,
-      }),
-    });
-    setCompletedTasksCount(completedTasksCount + 1);
-  };
-
-  const deleteTask = async (taskId: number) => {
-    const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
-      method: "DELETE",
-    });
-  };
-
   return (
-    <>
-      <div>
+    <div>
+      <ul className="h-[30vh] overflow-y-auto">
         {tasks.map((task) => (
-          <TaskItem
-            task={task}
-            handleChange={handleChange}
-            deleteTask={deleteTask}
-            tasks={tasks}
-            setCompleteTasksCount={setCompletedTasksCount}
-            completedTasksCount={completedTasksCount}
-          />
+          <TaskItem key={task.id} tasks={task}></TaskItem>
         ))}
-      </div>
+      </ul>
       <div className=" my-2 h-[15vh] flex flex-col items-center justify-center">
         <div className="py-2 px-4 w-[30vw] rounded bg-[#5C76BD] mb-2 flex justify-between">
           <p className="grid place-items-center">All Tasks</p>
@@ -61,6 +28,6 @@ export default function TaskList({ tasks }: TaskListProps) {
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }
