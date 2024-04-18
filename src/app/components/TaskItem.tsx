@@ -41,6 +41,7 @@ export default function TaskItem({ tasks }: TaskProps) {
 
   const handleEditTask = async (title: string) => {
     await EditTask(tasks, title);
+    setNewTaskName("");
     router.refresh();
   };
 
