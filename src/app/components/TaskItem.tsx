@@ -1,9 +1,23 @@
 import { ITask } from "@/app/types/tasks";
-import { FinishTask, deleteTask } from "../../../api";
+import { EditTask, FinishTask, deleteTask } from "../../../api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconCheck } from "@tabler/icons-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Copy } from "lucide-react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 type TaskProps = {
   tasks: ITask;
@@ -11,6 +25,7 @@ type TaskProps = {
 
 export default function TaskItem({ tasks }: TaskProps) {
   const router = useRouter();
+  const [newTaskName, setNewTaskName] = useState("");
   const [status, setStatus] = useState(tasks.isFinished);
 
   const handleDeleteTask = async (id: string) => {
@@ -18,9 +33,14 @@ export default function TaskItem({ tasks }: TaskProps) {
     router.refresh();
   };
 
-  const handleFinishTask = async (id: string, isFinished: boolean) => {
+  const handleFinishTask = async (isFinished: boolean) => {
     await FinishTask(tasks, !status);
     setStatus(!status);
+    router.refresh();
+  };
+
+  const handleEditTask = async (title: string) => {
+    await EditTask(tasks, title);
     router.refresh();
   };
 
@@ -30,7 +50,7 @@ export default function TaskItem({ tasks }: TaskProps) {
         <Checkbox
           checked={status}
           onCheckedChange={(e) => {
-            handleFinishTask(tasks.id, !status);
+            handleFinishTask(!status);
           }}
         />
       </div>
@@ -38,9 +58,39 @@ export default function TaskItem({ tasks }: TaskProps) {
         {tasks.title}
       </div>
       <div className="ml-1 bg-[#23366D] rounded-r-[5px] w-[4vw] h-[5vh] flex justify-around">
-        <button>
-          <IconEdit color="white" />
-        </button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button>
+              <IconEdit color="white" />
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Edit Task</DialogTitle>
+            </DialogHeader>
+            <div className="flex items-center space-x-2">
+              <div className="grid flex-1 gap-2">
+                <Input
+                  defaultValue=""
+                  value={newTaskName}
+                  onChange={(e) => setNewTaskName(e.target.value)}
+                />
+              </div>
+              <DialogClose>
+                <Button type="submit" size="sm" className="px-3">
+                  <IconCheck onClick={() => handleEditTask(newTaskName)} />
+                </Button>
+              </DialogClose>
+            </div>
+            <DialogFooter className="sm:justify-start">
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Close
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         <button onClick={() => handleDeleteTask(tasks.id)}>
           <IconTrash color="red" />
         </button>

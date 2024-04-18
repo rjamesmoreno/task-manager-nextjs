@@ -43,6 +43,19 @@ export const FinishTask = async (task: ITask, isFinished: boolean) => {
       isFinished: isFinished,
     }),
   });
-  const updatedTodo = await res.json();
-  return updatedTodo;
+};
+
+
+export const EditTask = async (task: ITask, title: string) => {
+  const res = await fetch(`${baseUrl}/tasks/${task.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: task.id,
+      title: title,
+      isFinished: task.isFinished,
+    }),
+  });
 };
