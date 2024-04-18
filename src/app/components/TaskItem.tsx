@@ -87,7 +87,7 @@ export default function TaskItem({ tasks }: TaskProps) {
                   Close
                 </Button>
               </DialogClose>
-            </DialogFooter>
+            </DialogFooter> 
           </DialogContent>
         </Dialog>
         <button onClick={() => handleDeleteTask(tasks.id)}>
