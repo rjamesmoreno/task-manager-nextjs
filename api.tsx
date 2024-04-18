@@ -3,10 +3,14 @@ import { ITask } from "@/app/types/tasks";
 const baseUrl = "http://localhost:8000";
 
 export const getAllTasks = async () => {
-  const res = await fetch(`${baseUrl}/tasks`, { cache: "no-store" });
-  const tasks = await res.json();
-  console.log(tasks);
-  return tasks;
+  try {
+    const res = await fetch(`${baseUrl}/tasks`, { cache: "no-store" });
+    const tasks = await res.json();
+    return tasks;
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    return [];
+  }
 };
 
 export const addTask = async (task: ITask) => {
