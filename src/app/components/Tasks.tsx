@@ -72,7 +72,7 @@ export default function Tasks({
                     value={newTaskName}
                     onChange={(e) => setNewTaskName(e.target.value)}
                   />
-                  <Button type="submit" size="sm" className="px-3">
+                  <Button type="submit" className="mx-2">
                     <IconCheck />
                   </Button>
                 </form>
