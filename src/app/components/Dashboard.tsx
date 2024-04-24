@@ -1,7 +1,7 @@
 import { addTask, deleteTask, editTask } from "../api/tasks/route";
 import { Task } from "../page";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
-import Toaster from "./Toaster";
+import Toaster from "./Toast";
 import TasksList from "./TaskList";
 
 
