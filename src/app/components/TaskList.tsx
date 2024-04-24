@@ -1,19 +1,26 @@
-"use client";
-import TaskItem from "./TaskItem";
-import { ITask } from "../types/tasks";
+import React from 'react'
+import Tasks from './Tasks'
+import { Task } from '../page'
 
 type TaskListProps = {
-  tasks: ITask[];
+  tasks: Task[];
+  onUpdateTask: (updatedTask: Task) => void;
+  onDeleteTask: (taskId: string) => void;
 };
 
-export default function TaskList({ tasks }: TaskListProps) {
+export default function ({ tasks, onUpdateTask, onDeleteTask }: TaskListProps) {
   return (
     <div>
-      <ul>
+      <li>
         {tasks.map((task) => (
-          <TaskItem key={task.id} tasks={task}></TaskItem>
+          <Tasks 
+          key={task.id} 
+          tasks={task}
+          onUpdateTask={onUpdateTask}
+          onDeleteTask={onDeleteTask}
+        />
         ))}
-      </ul>
+      </li>
     </div>
-  );
+  )
 }
