@@ -93,22 +93,24 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
             </button>
           </form>
         </div>
-        <h2 className="text-white px-4 text-lg">Tasks To Do</h2>
-        <ul className="h-[30vh] overflow-y-auto">
-          {error && <p className="text-red-500">{error}</p>}
-          {tasks.length > 0 ? (
-            <TasksList
-              tasks={tasks}
-              onUpdateTask={handleUpdateTask}
-              onDeleteTask={handleDeleteTask}
-            />
-          ) : (
-            <p className="grid place-items-center text-gray-500 text-xl">
-              No tasks
-            </p>
-          )}
-        </ul>
-        <div className="my-2 h-[15vh] flex flex-col items-center justify-center">
+        <section>
+          <h2 className="text-white px-4 text-lg">Tasks To Do</h2>
+          <ul className="h-[30vh] overflow-y-auto">
+            {error && <p className="text-red-500">{error}</p>}
+            {tasks.length > 0 ? (
+              <TasksList
+                tasks={tasks}
+                onUpdateTask={handleUpdateTask}
+                onDeleteTask={handleDeleteTask}
+              />
+            ) : (
+              <p className="grid place-items-center text-gray-500 text-xl">
+                No tasks
+              </p>
+            )}
+          </ul>
+        </section>
+        <section className="my-2 h-[15vh] flex flex-col items-center justify-center">
           <div className="py-2 px-4 w-[30vw] rounded bg-[#5C76BD] mb-2 flex justify-between">
             <p className="grid place-items-center">All Tasks</p>
             <p className="py-1 px-5 bg-[#23366D] rounded text-red-500">
@@ -125,7 +127,7 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
               }
             </p>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
