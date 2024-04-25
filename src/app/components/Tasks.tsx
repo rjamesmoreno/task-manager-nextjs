@@ -3,7 +3,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { IconCheck, IconEdit, IconTrash } from "@tabler/icons-react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -99,7 +98,6 @@ export default function Tasks({
             </div>
           </DialogContent>
         </Dialog>
-        {/* Delete Confirmation Dialog */}
         <AlertDialog open={showConfirmDelete}>
           <AlertDialogContent>
             <AlertDialogDescription>
@@ -115,7 +113,6 @@ export default function Tasks({
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-
         <button onClick={handleDeleteConfirmation}>
           <IconTrash color="red" />
         </button>

@@ -4,7 +4,6 @@ import { FormEventHandler, useEffect, useRef, useState } from "react";
 import Toaster from "./Toast";
 import TasksList from "./TaskList";
 
-
 type DashboardProps = {
   initialTasks: Task[];
 };
@@ -44,7 +43,7 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
       const updatedTasks = tasks.map((task) =>
         task.id === updatedTask.id ? updatedTask : task
       );
-      await editTask(updatedTask); // Ensure await here
+      await editTask(updatedTask);
       setTasks(updatedTasks);
       setSuccessMessage("Task updated successfully");
     } catch (error) {
@@ -58,7 +57,7 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
     setLoading(true);
     setError(null);
     try {
-      await deleteTask(taskId); // Ensure await here
+      await deleteTask(taskId);
       const updatedTasks = tasks.filter((task) => task.id !== taskId);
       setTasks(updatedTasks);
       setSuccessMessage("Task deleted successfully");

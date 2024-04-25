@@ -1,6 +1,6 @@
-import React from 'react'
-import Tasks from './Tasks'
-import { Task } from '../page'
+import React from "react";
+import Tasks from "./Tasks";
+import { Task } from "../page";
 
 type TaskListProps = {
   tasks: Task[];
@@ -13,14 +13,14 @@ export default function ({ tasks, onUpdateTask, onDeleteTask }: TaskListProps) {
     <div>
       <li>
         {tasks.map((task) => (
-          <Tasks 
-          key={task.id} 
-          tasks={task}
-          onUpdateTask={onUpdateTask}
-          onDeleteTask={onDeleteTask}
-        />
+          <Tasks
+            key={task.id}
+            tasks={task}
+            onUpdateTask={onUpdateTask}
+            onDeleteTask={onDeleteTask}
+          />
         ))}
       </li>
     </div>
-  )
+  );
 }
