@@ -48,9 +48,14 @@ export default function Tasks({
           onCheckedChange={() => handleFinishTask(tasks)}
         />
       </div>
-      <p className="bg-[#23366D] w-[24vw] h-[5vh] pl-2 text-white content-center">
+      <p
+        className={`bg-[#23366D] w-[24vw] h-[5vh] pl-2 content-center ${
+          tasks.isFinished ? "line-through text-gray-500" : "text-white"
+        }`}
+      >
         {tasks.title}
       </p>
+
       <div className="ml-1 bg-[#23366D] rounded-r-[5px] px-1 h-[5vh] flex justify-around">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
