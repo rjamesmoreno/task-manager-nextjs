@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-type ToasterProps = {
+type ToastProps = {
   message: string | null;
   onClose: () => void;
 };
 
-export default function Toast({ message, onClose }: ToasterProps) {
+export default function Toast({ message, onClose }: ToastProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

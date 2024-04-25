@@ -55,7 +55,7 @@ export default function Tasks({
     setError("");
   };
 
-  const handleDeleteConfirmation = () => {
+  function handleDeleteConfirmation() {
     setShowConfirmDelete(true);
   };
 
