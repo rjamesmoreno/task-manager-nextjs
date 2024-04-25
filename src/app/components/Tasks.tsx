@@ -18,7 +18,6 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogHeader,
 } from "@/components/ui/alert-dialog";
 
 type TaskProps = {
@@ -35,6 +34,7 @@ export default function Tasks({
   const [newTaskName, setNewTaskName] = useState("");
   const [open, setOpen] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [error, setError] = useState("");
 
   const handleFinishTask = async (task: Task) => {
     const updatedTask = { ...task, isFinished: !task.isFinished };
@@ -43,10 +43,16 @@ export default function Tasks({
 
   const handleEditTask: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    if (!newTaskName.trim()) {
+      setError("Please provide a task name.");
+      return;
+    }
+
     const updatedTask = { ...tasks, title: newTaskName };
     await onUpdateTask(updatedTask);
     setNewTaskName("");
     setOpen(false);
+    setError("");
   };
 
   const handleDeleteConfirmation = () => {
@@ -88,12 +94,16 @@ export default function Tasks({
                     defaultValue={tasks.title}
                     placeholder={tasks.title}
                     value={newTaskName}
-                    onChange={(e) => setNewTaskName(e.target.value)}
+                    onChange={(e) => {
+                      setNewTaskName(e.target.value);
+                      setError("");
+                    }}
                   />
                   <Button type="submit" className="mx-2">
                     <IconCheck />
                   </Button>
                 </form>
+                <div>{error && <p className="text-red-500">{error}</p>}</div>
               </div>
             </div>
           </DialogContent>
