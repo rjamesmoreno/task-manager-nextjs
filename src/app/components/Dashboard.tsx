@@ -1,8 +1,8 @@
 import { addTask, deleteTask, editTask } from "../api/tasks/route";
 import { Task } from "../page";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
-import Toaster from "./Toast";
 import TasksList from "./TaskList";
+import Toast from "./Toast";
 
 type DashboardProps = {
   initialTasks: Task[];
@@ -14,10 +14,6 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    setTasks(initialTasks);
-  }, [initialTasks]);
 
   const handleCreateTask: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -70,7 +66,7 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
 
   return (
     <div className="w-[70vw] p-12 bg-[#3450A1] rounded-xl min-h-[80vh]">
-      <Toaster
+      <Toast
         message={successMessage || error}
         onClose={() => {
           setSuccessMessage(null);
