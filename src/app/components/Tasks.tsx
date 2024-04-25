@@ -12,6 +12,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Task } from "../page";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from "@/components/ui/alert-dialog";
 
 type TaskProps = {
   tasks: Task;
@@ -26,6 +35,7 @@ export default function Tasks({
 }: TaskProps) {
   const [newTaskName, setNewTaskName] = useState("");
   const [open, setOpen] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const handleFinishTask = async (task: Task) => {
     const updatedTask = { ...task, isFinished: !task.isFinished };
@@ -38,6 +48,10 @@ export default function Tasks({
     await onUpdateTask(updatedTask);
     setNewTaskName("");
     setOpen(false);
+  };
+
+  const handleDeleteConfirmation = () => {
+    setShowConfirmDelete(true);
   };
 
   return (
@@ -85,8 +99,25 @@ export default function Tasks({
             </div>
           </DialogContent>
         </Dialog>
-        <button>
-          <IconTrash onClick={() => onDeleteTask(tasks.id)} color="red" />
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog open={showConfirmDelete}>
+          <AlertDialogContent>
+            <AlertDialogDescription>
+              Are you sure you want to delete this task?
+            </AlertDialogDescription>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setShowConfirmDelete(false)}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={() => onDeleteTask(tasks.id)}>
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <button onClick={handleDeleteConfirmation}>
+          <IconTrash color="red" />
         </button>
       </div>
     </li>
