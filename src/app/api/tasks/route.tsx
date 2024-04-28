@@ -3,11 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 
 export const fetchTasks = async () => {
   try {
-    const response = await fetch("http://localhost:8001/tasks");
+    const response = await fetch("http://localhost:8000/tasks");
     if (!response.ok) {
       throw new Error("Failed to fetch tasks");
     }
     const data = await response.json();
+    console.log(data)
     return data;
   } catch (error) {
     console.error("Error fetching tasks");
@@ -17,7 +18,7 @@ export const fetchTasks = async () => {
 
 export const addTask = async (title: string) => {
   try {
-    const response = await fetch("http://localhost:8001/tasks", {
+    const response = await fetch("http://localhost:8000/tasks", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -41,7 +42,7 @@ export const addTask = async (title: string) => {
 
 export const deleteTask = async (id: string) => {
   try {
-    const response = await fetch(`http://localhost:8001/tasks/${id}`, {
+    const response = await fetch(`http://localhost:8000/tasks/${id}`, {
       method: "DELETE",
     });
     if (!response.ok) {
@@ -55,7 +56,7 @@ export const deleteTask = async (id: string) => {
 
 export const editTask = async (task: Task) => {
   try {
-    const response = await fetch(`http://localhost:8001/tasks/${task.id}`, {
+    const response = await fetch(`http://localhost:8000/tasks/${task.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
