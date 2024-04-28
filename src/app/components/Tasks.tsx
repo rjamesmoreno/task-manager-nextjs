@@ -35,6 +35,8 @@ export default function Tasks({
   const [open, setOpen] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [error, setError] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
 
   const handleFinishTask = async (task: Task) => {
     const updatedTask = { ...task, isFinished: !task.isFinished };
@@ -48,15 +50,34 @@ export default function Tasks({
       return;
     }
 
-    const updatedTask = { ...tasks, title: newTaskName };
-    await onUpdateTask(updatedTask);
-    setNewTaskName("");
-    setOpen(false);
-    setError("");
+    setEditLoading(true);
+    try {
+      const updatedTask = { ...tasks, title: newTaskName };
+      await onUpdateTask(updatedTask);
+      setNewTaskName("");
+      setOpen(false);
+      setError("");
+    } catch (error) {
+      setError("Failed to edit task");
+    } finally {
+      setEditLoading(false);
+    }
   };
 
-  function handleDeleteConfirmation() {
+  const handleDeleteConfirmation = async () => {
     setShowConfirmDelete(true);
+  };
+
+  const handleDeleteAction = async () => {
+    setDeleteLoading(true);
+    try {
+      await onDeleteTask(tasks.id);
+    } catch (error) {
+      setError("Failed to delete task");
+    } finally {
+      setDeleteLoading(false);
+      setShowConfirmDelete(false);
+    }
   };
 
   return (
@@ -74,11 +95,11 @@ export default function Tasks({
       >
         {tasks.title}
       </p>
-
       <div className="ml-1 bg-[#23366D] rounded-r-[5px] px-1 h-[5vh] flex justify-around">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <button>
+            <button disabled={editLoading}>
+              {" "}
               <IconEdit color="white" />
             </button>
           </DialogTrigger>
@@ -98,8 +119,9 @@ export default function Tasks({
                       setNewTaskName(e.target.value);
                       setError("");
                     }}
+                    disabled={editLoading}
                   />
-                  <Button type="submit" className="mx-2">
+                  <Button type="submit" className="mx-2" disabled={editLoading}>
                     <IconCheck />
                   </Button>
                 </form>
@@ -117,7 +139,10 @@ export default function Tasks({
               <AlertDialogCancel onClick={() => setShowConfirmDelete(false)}>
                 Cancel
               </AlertDialogCancel>
-              <AlertDialogAction onClick={() => onDeleteTask(tasks.id)}>
+              <AlertDialogAction
+                onClick={handleDeleteAction}
+                disabled={deleteLoading}
+              >
                 Delete
               </AlertDialogAction>
             </AlertDialogFooter>

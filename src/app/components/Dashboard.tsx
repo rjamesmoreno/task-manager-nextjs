@@ -3,6 +3,7 @@ import { Task } from "../page";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import TasksList from "./TaskList";
 import Toast from "./Toast";
+import { IconPlus, IconLoader2 } from "@tabler/icons-react";
 
 type DashboardProps = {
   initialTasks: Task[];
@@ -12,21 +13,25 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
   const taskNames = useRef<HTMLInputElement>(null);
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [toastMessage, settoastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTasks(initialTasks);
+  }, [initialTasks]);
 
   const handleCreateTask: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    settoastMessage(null);
+    settoastMessage("Creating task...");
     try {
       const task = taskNames.current;
       const newTask = await addTask(task?.value as string);
       setTasks([...tasks, newTask]);
       task!.value = "";
-      setSuccessMessage("Task created successfully");
+      settoastMessage("Task created successfully");
     } catch (error) {
-      setError("Failed to create task");
+      settoastMessage("Failed to create task");
     } finally {
       setLoading(false);
     }
@@ -34,16 +39,17 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
 
   const handleUpdateTask = async (updatedTask: Task) => {
     setLoading(true);
-    setError(null);
+    settoastMessage(null);
+    settoastMessage("Updating task...");
     try {
       const updatedTasks = tasks.map((task) =>
         task.id === updatedTask.id ? updatedTask : task
       );
       await editTask(updatedTask);
       setTasks(updatedTasks);
-      setSuccessMessage("Task updated successfully");
+      settoastMessage("Task updated successfully");
     } catch (error) {
-      setError("Failed to update task");
+      settoastMessage("Failed to update task");
     } finally {
       setLoading(false);
     }
@@ -51,14 +57,15 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
 
   const handleDeleteTask = async (taskId: string) => {
     setLoading(true);
-    setError(null);
+    settoastMessage(null);
+    settoastMessage("Deleting task...");
     try {
       await deleteTask(taskId);
       const updatedTasks = tasks.filter((task) => task.id !== taskId);
       setTasks(updatedTasks);
-      setSuccessMessage("Task deleted successfully");
+      settoastMessage("Task deleted successfully");
     } catch (error) {
-      setError("Failed to delete task");
+      settoastMessage("Failed to delete task");
     } finally {
       setLoading(false);
     }
@@ -67,10 +74,10 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
   return (
     <div className="w-[70vw] p-12 bg-[#3450A1] rounded-xl min-h-[80vh]">
       <Toast
-        message={successMessage || error}
+        message={toastMessage}
         onClose={() => {
-          setSuccessMessage(null);
-          setError(null);
+          settoastMessage(null);
+          settoastMessage(null);
         }}
       />
       <div className="grid grid-flow-row justify-center">
@@ -86,17 +93,20 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
             />
             <button
               type="submit"
-              className="btn bg-[#EB06FF] active:bg-[#C617D5] active:text-white/75 text-white text-xl font-black text-center rounded-[100%] size-8 absolute ml-[-35px] top-5"
+              className="btn bg-[#EB06FF] active:bg-[#C617D5] active:bg-greye/75 text-white text-xl font-black text-center rounded-[100%] size-8 absolute ml-[-35px] top-5"
               disabled={loading}
             >
-              +
+              {loading ? (
+                <IconLoader2 stroke={2} className="ml-1 animate-spin" />
+              ) : (
+                <IconPlus stroke={2} className="ml-1" />
+              )}
             </button>
           </form>
         </div>
         <section>
           <h2 className="text-white px-4 text-lg">Tasks To Do</h2>
           <ul className="h-[30vh] overflow-y-auto">
-            {error && <p className="text-red-500">{error}</p>}
             {tasks.length > 0 ? (
               <TasksList
                 tasks={tasks}
