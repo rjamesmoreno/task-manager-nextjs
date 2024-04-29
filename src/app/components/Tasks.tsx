@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { IconCheck, IconEdit, IconTrash } from "@tabler/icons-react";
 import {
@@ -38,12 +38,12 @@ export default function Tasks({
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
 
-  const handleFinishTask = async (task: Task) => {
+  async function handleFinishTask(task: Task) {
     const updatedTask = { ...task, isFinished: !task.isFinished };
     await onUpdateTask(updatedTask);
-  };
+  }
 
-  const handleEditTask: FormEventHandler<HTMLFormElement> = async (e) => {
+  async function handleEditTask(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!newTaskName.trim()) {
       setError("Please provide a task name.");
@@ -62,13 +62,13 @@ export default function Tasks({
     } finally {
       setEditLoading(false);
     }
-  };
+  }
 
-  const handleDeleteConfirmation = async () => {
+  function handleDeleteConfirmation() {
     setShowConfirmDelete(true);
-  };
+  }
 
-  const handleDeleteAction = async () => {
+  async function handleDeleteAction() {
     setDeleteLoading(true);
     try {
       await onDeleteTask(tasks.id);
@@ -78,7 +78,7 @@ export default function Tasks({
       setDeleteLoading(false);
       setShowConfirmDelete(false);
     }
-  };
+  }
 
   return (
     <div key={tasks.id} className="py-2 px-4 flex">

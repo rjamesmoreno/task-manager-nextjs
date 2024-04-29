@@ -1,6 +1,6 @@
 import { addTask, deleteTask, editTask } from "../api/tasks/route";
 import { Task } from "../page";
-import { FormEventHandler, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import TasksList from "./TaskList";
 import Toast from "./Toast";
 import { IconPlus, IconLoader2 } from "@tabler/icons-react";
@@ -19,7 +19,7 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
     setTasks(initialTasks);
   }, [initialTasks]);
 
-  const handleCreateTask: FormEventHandler<HTMLFormElement> = async (e) => {
+  async function handleCreateTask(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     settoastMessage(null);
@@ -35,9 +35,9 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleUpdateTask = async (updatedTask: Task) => {
+  async function handleUpdateTask(updatedTask: Task) {
     setLoading(true);
     settoastMessage(null);
     settoastMessage("Updating task...");
@@ -53,9 +53,9 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleDeleteTask = async (taskId: string) => {
+  async function handleDeleteTask(taskId: string) {
     setLoading(true);
     settoastMessage(null);
     settoastMessage("Deleting task...");
@@ -69,7 +69,7 @@ export default function Dashboard({ initialTasks }: DashboardProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <div className="w-[70vw] p-12 bg-[#3450A1] rounded-xl min-h-[80vh]">
