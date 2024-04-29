@@ -81,7 +81,7 @@ export default function Tasks({
   };
 
   return (
-    <li key={tasks.id} className="py-2 px-4 flex">
+    <div key={tasks.id} className="py-2 px-4 flex">
       <div className="h-[5vh] w-[2vw] bg-[#23366D] grid place-items-center mr-1 rounded-l-lg">
         <Checkbox
           checked={tasks.isFinished}
@@ -152,6 +152,6 @@ export default function Tasks({
           <IconTrash color="red" />
         </button>
       </div>
-    </li>
+    </div>
   );
 }
